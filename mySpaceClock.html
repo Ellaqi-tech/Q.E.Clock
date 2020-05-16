@@ -5,6 +5,7 @@ to do:
 3. API image load too slow
 4. planet circle trail: depends on the browser's size, not stable
 5. could consider develope it to a screen lock mode
+6
 -->
 
 <!DOCTYPE html>
@@ -80,7 +81,7 @@ to do:
         data: {
             imgSrc: '',
             imgTitle: '',
-            currentTime: (new Date().getHours()<10?'0':'')+(new Date().getHours()<10?'0':'')+" : "+(new Date().getMinutes()<10?'0':'')+new Date().getMinutes(),
+            currentTime: (new Date().getHours()<10?'0':'')+new Date().getHours()+" : "+(new Date().getMinutes()<10?'0':'')+new Date().getMinutes(),
             currentDay: new Date().toDateString(),
             showIntro: false,
             introContent: ''
