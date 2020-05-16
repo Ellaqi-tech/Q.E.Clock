@@ -5,7 +5,7 @@ to do:
 3. API image load too slow
 4. planet circle trail: depends on the browser's size, not stable
 5. could consider develope it to a screen lock mode
-6
+6. the planet circle mode can be closed
 -->
 
 <!DOCTYPE html>
@@ -23,25 +23,32 @@ to do:
     <!--    enable fullscreen display  -->
 <!--    <fullscreen :fullscreen.sync="fullscreen">-->
     
+    <div id="overlay"></div>
+    
         <div id="main">
-            <div class="time" id="time">
+            <div class="time main" id="time">
                 {{currentTime}}
 
+<!--
                 <div class="spacecircle">
                     <div class="invisiblecircle">
                         <span class="planet"></span>
                     </div>
                 </div>
+-->
 
             </div>
-            <div class="date" id="date">{{currentDay}}</div>
+            
+            <div class="date main" id="date">{{currentDay}}</div>
         </div>
         <img class="spacebg" :src="imgSrc" :title="imgTitle">
 
 
-        <div class="imgIntro" :class="{ active: showIntro }" @click="showIntro = !showIntro" >
-            <h1>{{imgTitle}}</h1>
-            <p>{{introContent}}</p>
+        <div id="titles" class="imgIntro" :class="{ active: showIntro }" @click="showIntro = !showIntro" >
+            <div id="titlecontent">
+                <p class="center">{{imgTitle}}</p>
+                <p>{{introContent}}</p>
+            </div>
         </div>
         
 <!--
@@ -77,12 +84,11 @@ to do:
 //        },
         
         
-        
         data: {
             imgSrc: '',
             imgTitle: '',
-            currentTime: (new Date().getHours()<10?'0':'')+new Date().getHours()+" : "+(new Date().getMinutes()<10?'0':'')+new Date().getMinutes(),
-            currentDay: new Date().toDateString(),
+            currentTime: '',     
+            currentDay: '',
             showIntro: false,
             introContent: ''
         },
@@ -104,7 +110,19 @@ to do:
             }
 
         }     
-    });    
+    });   
+    
+    
+    var timerID = setInterval(updateTime, 1000);
+    updateTime();
+    function updateTime() 
+    {
+        vm.currentTime = 
+            (new Date().getHours()<10?'0':'')+new Date().getHours()
+            +" : "+(new Date().getMinutes()<10?'0':'')+new Date().getMinutes();
+//            +" : "+new Date().getSeconds(),1000;
+        vm.currentDay = new Date().toDateString();
+    }
 
     
 </script>
