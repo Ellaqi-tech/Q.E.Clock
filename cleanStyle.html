@@ -1,0 +1,129 @@
+<!--
+to do:
+1. when min change, load 3D cuboid text effect
+2. consider time zone
+3. API image load too slow
+4. planet circle trail: depends on the browser's size, not stable
+5. could consider develope it to a screen lock mode
+6. the planet circle mode can be closed
+7. can choose whether to show seconds or not
+-->
+
+<!DOCTYPE html>
+<link type="text/css" href="cleanStyle.css" rel="stylesheet">
+<style>
+/*
+    [v-cloak] {
+        display: none;
+    }
+*/
+ 
+</style>
+
+<div id="app">
+    <!--    enable fullscreen display  -->
+<!--    <fullscreen :fullscreen.sync="fullscreen">-->
+    
+    <div id="overlay"></div>
+    
+        <div id="main">
+            <div class="time main" id="time">
+                {{currentTime}}
+
+                <div class="spacecircle">
+                    <div class="invisiblecircle">
+                        <span class="planet"></span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="date main" id="date">{{currentDay}}</div>
+        </div>
+    
+
+
+<!--
+        <div id="titles" class="imgIntro" :class="{ active: showIntro }" @click="showIntro = !showIntro" >
+            <div id="titlecontent">
+                <p class="center">{{imgTitle}}</p>
+                <p>{{introContent}}</p>
+            </div>
+        </div>
+-->
+        
+<!--
+    </fullscreen>
+    <button type="button" @click="toggle" >Fullscreen</button>
+-->
+    
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>     
+    var vm = new Vue({
+        el: '#app',
+        
+        
+        //import 'fullscreen' component--
+//        import fullscreen from 'vue-fullscreen',
+//        import Vue from 'vue',
+//        
+//        Vue.use(fullscreen),
+//        export default {
+//            methods: {
+//                toggle () {
+//                    this.fullscreen = !this.fullscreen
+//                }
+//            },
+//            data () {
+//                return {
+//                    fullscreen: false
+//                }
+//            }
+//        },
+        
+        
+        data: {
+            //imgSrc: '',
+            //imgTitle: '',
+            currentTime: '',     
+            currentDay: '',
+            //showIntro: false,
+            //introContent: ''
+        },
+        
+        created: function () {
+            //this.fetchApod();
+        },
+        
+        methods: {            
+//            fetchApod: function () {
+//                var apiKey = 'vgkAS8QzSvOxs11syGCh6XqCOJ7izliXFmX8ZhfX';
+//                var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
+//                axios.get(url)
+//                    .then(function (res) {
+//                        vm.imgSrc = res.data.url;
+//                        vm.imgTitle = res.data.title;
+//                        vm.introContent = res.data.explanation;
+//                    });
+//            }
+
+        }     
+    });   
+    
+    
+    var timerID = setInterval(updateTime, 1000);
+    updateTime();
+    function updateTime() 
+    {
+        vm.currentTime = 
+            (new Date().getHours()<10?'0':'')+new Date().getHours()
+            +" : "+(new Date().getMinutes()<10?'0':'')+new Date().getMinutes();
+//            +" : "+new Date().getSeconds(),1000;
+        vm.currentDay = new Date().toDateString();
+    }
+
+    
+</script>
