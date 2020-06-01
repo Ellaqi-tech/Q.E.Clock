@@ -1,0 +1,146 @@
+<!--
+to do:
+1. when min change, load 3D cuboid text effect
+2. consider time zone
+3. API image load too slow
+4. planet circle trail: depends on the browser's size, not stable
+5. could consider develope it to a screen lock mode
+6. the planet circle mode can be closed
+7. can choose whether to show seconds or not
+8. when the api doesn't work properly (e.g. 1.video instead of png/jgp 2. bgi too dark/light), detect that and put the default bgi(background image)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link type="text/css" href="style/index-new.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">  
+        <!--    switch MODE button    -->
+        <div class="wrapper">
+          <input @click="mode='space'" id="hide-checkbox" type="checkbox" checked>
+          <label for="hide-checkbox" class="toggle">
+            <span class="toggle-button">
+              <span class="crater crater-1"></span>
+              <span class="crater crater-2"></span>
+              <span class="crater crater-3"></span>   
+              <span class="crater crater-4"></span>
+              <span class="crater crater-5"></span>
+              <span class="crater crater-6"></span>
+              <span class="crater crater-7"></span>
+            </span>
+            <span class="star star-1"></span>
+            <span class="star star-2"></span>
+            <span class="star star-3"></span>
+            <span class="star star-4"></span>
+            <span class="star star-5"></span>
+            <span class="star star-6"></span>
+            <span class="star star-7"></span>
+            <span class="star star-8"></span>
+          </label>
+        </div><!--    switch button end    -->  
+        
+        <!-- ***************** space part1 ***************** -->
+        <div :class="{cOverlay:mode=='clean', sOverlay:mode=='space'}"></div>
+        <img :class="{cSpacebg:mode=='clean', sSpacebg:mode=='space'}" :src="imgSrc" :title="imgTitle" alt="imgTitle">
+        <!-- ***************** space part1 end ***************** -->
+        
+        <div id="main" :class="{cMain:mode=='clean', sMain:mode=='space'}">
+            <div id="time" :class="{cMaintext:mode=='clean', cTime:mode=='clean', sTime:mode=='space', sMaintext:mode=='space'}">
+                {{currentTime}}
+            </div>
+        <!-- transition for date when show pic explanation -->
+        <transition name = "gone" :enter="enter">
+            <div id="date" :class="{cDate:mode=='clean', cMaintext:mode=='clean', sDate:mode=='space', sMaintext:mode=='space'}" v-if="show">{{currentDay}}</div>
+        </transition>
+            
+    </div>
+        
+    <!-- ***************** clean part1 ***************** -->
+    <div :class="{cFooter:mode=='clean', cMaintext:mode=='clean', sFooter:mode=='space'}">QEClock</div>
+    <!-- ***************** clean part1 end ***************** -->
+        
+    <!-- ***************** space part2 ***************** -->
+    <div :class="{cShowinfo:mode=='clean', sMaintext:mode=='space', sShowinfo:mode=='space'}" 
+         @mouseover="hover = true, show = false"
+         @mouseleave="hover = false, show = true">
+        hover to view explanation
+    </div>
+    <!-- transition for picture explanation -->
+    <transition name = "fade" :enter="enter">
+        <div id="titles" :class="{cImgIntro:mode=='clean', sImgIntro:mode=='space'}" v-if="hover">
+            <div id="titlecontent">
+                <p class="center">{{imgTitle}}</p>
+                <p>{{introContent}}</p>
+            </div>
+        </div>
+    </transition>
+    <div :class="{cCopyright:mode=='clean', sCopyright:mode=='space'}">Designed by &copy; Ella Qi 2020</div>
+    <!-- ***************** space part2 end ***************** -->
+        
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>     
+    var vm = new Vue({
+        el: '#app',   
+        data: {
+            mode: 'clean', //switch mode button, default mode: clean
+            imgSrc: '',
+            imgTitle: '',
+            currentTime: '',     
+            currentDay: '',
+            introContent: '',
+            hover: false,
+            show: true,
+        },
+        created: function () {
+            this.fetchApod();
+        },
+        methods: {  
+            
+//            switchmode: function (el,done) {
+//                if(mode == 'space') {
+//                    mode = 'clean';
+//                } else {
+//                    mode = 'space';
+//                }
+//            },
+            
+            fetchApod: function () {
+                var apiKey = 'vgkAS8QzSvOxs11syGCh6XqCOJ7izliXFmX8ZhfX';
+                var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
+                axios.get(url)
+                    .then(function (res) {
+                        vm.imgSrc = res.data.url;
+                        vm.imgTitle = res.data.title;
+                        vm.introContent = res.data.explanation;
+                    });
+            },
+            //fade in & fade out effect:
+            enter: function(el, done) {
+                setTimeout(function() {
+                hover = false;
+                show = true;
+                }, 4000);
+            },        
+        } //methods end  
+    });    
+    
+    //clock update by minute:
+    var timerID = setInterval(updateTime, 1000);
+    updateTime();
+    function updateTime() 
+    {
+        vm.currentTime = 
+            (new Date().getHours()<10?'0':'')+new Date().getHours()
+            +" : "+(new Date().getMinutes()<10?'0':'')+new Date().getMinutes();
+        vm.currentDay = new Date().toDateString();
+    }
+</script>
+<!--
+reference:
+https://codepen.io/eurotrash/pen/QdqJJg-->
+</body>
+</html>
