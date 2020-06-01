@@ -28,12 +28,14 @@ body {
     background: linear-gradient(to bottom, #9bb1ff, #d2d8f8);
     background-repeat: no-repeat;
     z-index: -2;
+    transition: all 500ms ease-out;
 }
 .cMain {
     width: 100%;
     height: 100%;
     text-align: center;
     margin: 20% 0;
+    transition: all 500ms ease-out;
 }
 .cMaintext {
     font-family: 'Cinzel Decorative', cursive;
@@ -45,6 +47,7 @@ body {
     color: #bfd7ff;
     text-shadow: 0 13.36px 8.896px #788bff,0 -2px 1px #fff;
     letter-spacing: -4px;
+    transition: all 500ms ease-out;
 }
 .cTime {
     font-size: 40vmin; 

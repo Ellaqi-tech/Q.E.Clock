@@ -1,13 +1,12 @@
 <!--
 to do:
-1. when min change, load 3D cuboid text effect
-2. consider time zone
-3. API image load too slow
-4. planet circle trail: depends on the browser's size, not stable
-5. could consider develope it to a screen lock mode
-6. the planet circle mode can be closed
-7. can choose whether to show seconds or not
-8. when the api doesn't work properly (e.g. 1.video instead of png/jgp 2. bgi too dark/light), detect that and put the default bgi(background image)
+1. when the api doesn't work properly (e.g. 1.video instead of png/jgp 2. bgi too dark/light), detect that and put the default bgi(background image)
+2. API image load too slow
+3. could consider develope it to a screen lock mode/full screen
+(4. planet circle trail: depends on the browser's size, not stable)
+(5. can choose whether to show seconds or not)
+(6. when min change, load 3D cuboid text effect)
+7. consider time zone
 -->
 
 <!DOCTYPE html>
@@ -19,7 +18,7 @@ to do:
     <div id="app">  
         <!--    switch MODE button    -->
         <div class="wrapper">
-          <input @click="mode='space'" id="hide-checkbox" type="checkbox" checked>
+          <input v-model="isActive" @click="setNewToggleState" id="hide-checkbox" type="checkbox">
           <label for="hide-checkbox" class="toggle">
             <span class="toggle-button">
               <span class="crater crater-1"></span>
@@ -54,7 +53,6 @@ to do:
         <transition name = "gone" :enter="enter">
             <div id="date" :class="{cDate:mode=='clean', cMaintext:mode=='clean', sDate:mode=='space', sMaintext:mode=='space'}" v-if="show">{{currentDay}}</div>
         </transition>
-            
     </div>
         
     <!-- ***************** clean part1 ***************** -->
@@ -87,6 +85,7 @@ to do:
         el: '#app',   
         data: {
             mode: 'clean', //switch mode button, default mode: clean
+            isActive: true,
             imgSrc: '',
             imgTitle: '',
             currentTime: '',     
@@ -99,16 +98,16 @@ to do:
             this.fetchApod();
         },
         methods: {  
-            
-//            switchmode: function (el,done) {
-//                if(mode == 'space') {
-//                    mode = 'clean';
-//                } else {
-//                    mode = 'space';
-//                }
-//            },
-            
-            fetchApod: function () {
+            setNewToggleState: function() {
+                if(vm.isActive) {
+                    vm.mode = 'space';
+                } else {
+                    vm.mode = 'clean';
+                }
+                vm.isActive = !vm.isActive;
+                vm.$emit('setIsActive', vm.isActive);
+            },
+            fetchApod: function() {
                 var apiKey = 'vgkAS8QzSvOxs11syGCh6XqCOJ7izliXFmX8ZhfX';
                 var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
                 axios.get(url)
@@ -141,6 +140,14 @@ to do:
 </script>
 <!--
 reference:
-https://codepen.io/eurotrash/pen/QdqJJg-->
+https://codepen.io/eurotrash/pen/QdqJJg
+https://github.com/JonathanDn/vue-toggle-btn/blob/master/toggle-btn.vue
+-->
 </body>
 </html>
+
+
+
+
+
+
