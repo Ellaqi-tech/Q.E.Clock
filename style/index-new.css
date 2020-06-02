@@ -15,6 +15,10 @@ html, body {
 body {
     overflow: hidden;
 }
+a {
+    text-decoration: inherit;
+    color: inherit;
+}
 /********************************** CLEAN-MODE STYLE **********************************/
 .cOverlay {
     position: fixed;
@@ -239,7 +243,7 @@ div[class^="s"] {
     bottom: 1vw;
     right: 2vw;
     color: aliceblue;
-    opacity: 0.3;
+    opacity: 0.5;
     font-size: 0.75em;
     font-family: 'Stardos Stencil', cursive;
     transition: all 10ms ease-out;
